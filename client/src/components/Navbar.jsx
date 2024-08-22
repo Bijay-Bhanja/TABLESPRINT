@@ -1,9 +1,14 @@
 import React from 'react'
 import {FaUserCircle } from 'react-icons/fa';
 import logo0 from "../assets/logo0.svg"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Navbars() {
+  const navigate=useNavigate()
+  const handleClick=async ()=>{
+    localStorage.clear();
+    navigate("/login")
+}
   return (
     <nav className="bg-primary text-primary-foreground flex items-center justify-between p-4 shadow bg-purple-800">
       <div className="flex items-center">
@@ -12,7 +17,7 @@ function Navbars() {
       </div>
       <div className="flex items-center">
         <button className="bg-secondary text-secondary-foreground hover:bg-secondary/80 p-2 rounded-full">
-         <Link to="/"><FaUserCircle color="white" size="2em" /></Link>
+         <Link to="/" onClick={handleClick}><FaUserCircle color="white" size="2em" /></Link>
         </button>
       </div>
     </nav>

@@ -4,37 +4,56 @@ import Navbars from '../components/Navbar';
 import Drawer from '../components/Drawer';
 import { FaArrowLeft } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-
+import {ToastContainer,toast} from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 function Addcategory() {
   const [categoryName, setCategoryName] = useState('');
   const [sequence, setSequence] = useState('');
-  const navigate=useNavigate()
+  const navigate=useNavigate();
+  const [imagePreview, setImagePreview] = useState(null);
+  const toastOptions={
+    position:"bottom-right",
+    autoClose:8000,
+    pauseOnHover:true,
+    draggable:true,
+    theme:"dark"
+}
+  const handleImageUpload = (e) => {
+    setImagePreview(e.target.files[0]);
+    // if (file) {
+    //   const reader = new FileReader();
+    //   reader.onloadend = () => {
+    //     setImagePreview(reader.result); // Set the preview to the uploaded image
+    //   };
+    //   reader.readAsDataURL(file);
+    // }
+  };
  
   const dataSave = (e) => {
     e.preventDefault(); 
-
-    const categoryData = {
-      
-      categoryname: categoryName,
-      number: sequence,
-    };
-    // console.log(categoryName, sequence); 
+    
+    const categoryData=new FormData()
+    categoryData.append("categoryname", categoryName);
+    categoryData.append("number", sequence);
+    categoryData.append("file",imagePreview)
+    // console.log(categoryData); 
 
     if (categoryName === '' || sequence === '') {
-      alert('Please fill in all fields');
+      toast.error("please fill all the inputs",toastOptions)
     } else {
       try {
         
         axios.post('http://localhost:5000/categorys/addcategorys', categoryData)
-        .then(()=>{
-            
+        .then((res)=>{
+            console.log(res)
             navigate("/categorys")
 
         })
         .catch((err)=>{
             console.log(err)
         })
+        
         
       } catch (error) {
         console.error('Failed to send data:', error);
@@ -44,8 +63,7 @@ function Addcategory() {
   };
 
   const dataCancel = () => {
-    setCategoryName(''); 
-    setSequence('');
+    navigate('/categorys')
   };
 
   return (
@@ -86,9 +104,26 @@ function Addcategory() {
             </div>
             
             <div className="flex space-x-4">
-              <div className="border rounded-lg p-4 bg-card">
+              {/* <div className="border rounded-lg p-4 bg-card">
                 <img hidden alt="Uploaded image preview" src="https://placehold.co/100x100" className="rounded-md mb-2" />
                 <span className="text-muted-foreground">Upload Image</span>
+              </div> */}
+              <div className="border rounded-lg p-4 bg-card">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden" // Hide the file input
+                  id="imageUpload"
+                />
+                {imagePreview ? (
+                  <img alt="preview" src={imagePreview} className="rounded-md mb-2 w-20 h-20" />
+                ) : (
+                  <span className="text-muted-foreground">Upload Image</span>
+                )}
+                <label htmlFor="imageUpload" className="cursor-pointer">
+                  <div className="text-muted-foreground text-blue-800">Click here to upload an image</div>
+                </label>
               </div>
               <div className="border rounded-lg p-4 bg-card flex flex-col border-dashed">
                 <input type="file" />
@@ -117,7 +152,7 @@ function Addcategory() {
           </form>
         </div>
       </div>
-      
+      <ToastContainer/>
     </div>
   );
 }

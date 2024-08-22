@@ -3,7 +3,7 @@ import Navbars from '../components/Navbar'
 import Drawer from '../components/Drawer';
 import Menu from '../assets/menu.png';
 import { FaArrowLeft } from 'react-icons/fa';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {ToastContainer,toast} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
@@ -12,8 +12,20 @@ function Addsubcategory() {
     const [category, setCategory] = useState('');
     const [subname, setSubname] = useState('');
     const [sequence, setSequence] = useState('');
+    const [imagePreview, setImagePreview] = useState(null);
+
     const navigate=useNavigate()
-    let obj = useParams()
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setImagePreview(reader.result); // Set the preview to the uploaded image
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+    // let obj = useParams()
     const toastOptions={
         position:"bottom-right",
         autoClose:8000,
@@ -30,10 +42,10 @@ function Addsubcategory() {
             subCategoryName: subname,
             subCategorySequence: sequence,
         };
-        console.log(categoryData);
+        // console.log(categoryData);
 
         if (!category || !subname || !sequence) {
-            alert('Please fill in all fields');
+            toast.error("please fill all the inputs",toastOptions)
         } else {
             try {
                 await axios.post('http://localhost:5000/subcategorys/subaddcategory', categoryData);
@@ -96,8 +108,21 @@ function Addsubcategory() {
                     </div>
                     <div className="flex space-x-4 justify-end m-24">
                         <div className="border rounded-lg p-4 bg-card">
-                            <img hidden alt="Uploaded image preview" src="https://placehold.co/100x100" className="rounded-md mb-2" />
+                            <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            className="hidden" // Hide the file input
+                            id="imageUpload"
+                            />
+                            {imagePreview ? (
+                            <img alt="preview" src={imagePreview} className="rounded-md mb-2 w-20 h-20" />
+                            ) : (
                             <span className="text-muted-foreground">Upload Image</span>
+                            )}
+                            <label htmlFor="imageUpload" className="cursor-pointer">
+                            <div className="text-muted-foreground text-blue-800">Click here to upload an image</div>
+                            </label>
                         </div>
                         <div className="border rounded-lg p-4 bg-card flex flex-col border-dashed">
                             <input type="file" />

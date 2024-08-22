@@ -13,7 +13,11 @@ const productSchema = new Schema({
     productname:{
         type:String,
         required:true
-    }
+    },
+    // imageUrl:{
+    //     type:String,
+    //     required:false
+    // }
   
     
     

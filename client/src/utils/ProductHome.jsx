@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import Menu from '../assets/menu.png';
 import Product from "../assets/product.svg"
 import axios from 'axios';
@@ -19,7 +19,7 @@ function ProductHome() {
     draggable:true,
     theme:"dark"
 }
-    let navigate = useNavigate()
+    // let navigate = useNavigate()
     useEffect(() => {
         axios.get('http://localhost:5000/products/getproduct')
             .then((res) => {
@@ -35,7 +35,7 @@ function ProductHome() {
     
 
     const deleteProduct = (id) => {
-      console.log(`Attempting to delete subcategory with ID: ${id}`);
+      // console.log(`Attempting to delete subcategory with ID: ${id}`);
   
       axios.delete(`http://localhost:5000/products/deleteproduct/${id}`)
           .then(() => {
@@ -92,7 +92,7 @@ function ProductHome() {
                 
                 <td className="py-2 px-4 border-b text-center">
                                     {/* {console.log(subcategory.status)} */}
-                                    {subcategory.status == false ?  'Inactive':'Active'  }
+                                    {subcategory.status === false ?  'Inactive':'Active'  }
                                 </td>
                 
                 <td className="py-2 px-7 border-b text-center">

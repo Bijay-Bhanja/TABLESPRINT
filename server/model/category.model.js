@@ -9,6 +9,10 @@ const CategorySchema = new Schema({
     number: {
         type: Number,
         required: true
+    },
+    imageUrl:{
+        type:String,
+        required:false
     }
     // },
     // status:{

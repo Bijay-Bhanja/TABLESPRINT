@@ -1,4 +1,6 @@
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
 const {
     createProduct,
     getProduct,
@@ -8,6 +10,7 @@ const {
   
 } = require('../controllers/productController');
 const router = express.Router();
+
 
 router.post('/createproduct', createProduct);
 router.get('/getproduct', getProduct);

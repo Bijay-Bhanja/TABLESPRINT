@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Menu from '../assets/menu.png';
 import axios from 'axios';
 import {ToastContainer,toast} from "react-toastify"
@@ -11,7 +11,7 @@ function Subcategoryhome() {
   const [usersub, setUsersub] = useState([]);  
   const [isDelete,setIsDelete]=useState(false)
     
-    let navigate = useNavigate()
+    // let navigate = useNavigate()
     const toastOptions={
       position:"bottom-right",
       autoClose:8000,
@@ -88,9 +88,9 @@ function Subcategoryhome() {
                 <td className="py-2 px-4 border-b text-center">
                   <img alt={subcategory.subCategoryName} src={subcategory.imageUrl} className="w-10 h-10" />
                 </td> 
-                <td className="py-2 px-4 border-b">
+                <td className="py-2 px-4 border-b text-c text-center">
                                     {/* {console.log(subcategory.status)} */}
-                                    {subcategory.status == false ?  'Inactive':'Active'  }
+                                    {subcategory.status === false ?  'Inactive':'Active'  }
                                 </td>
                 <td className="py-2 px-4 border-b text-center">{subcategory.subCategorySequence}</td>
                 <td className="py-2 px-7 border-b text-center">

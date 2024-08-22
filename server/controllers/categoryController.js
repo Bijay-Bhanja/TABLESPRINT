@@ -1,17 +1,45 @@
 const CategorySchema = require('../model/category.model');
+const multer = require('multer');
+const path = require('path');
+
+
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, 'uploads/'); // Destination folder for uploads
+//     },
+//     filename: function (req, file, cb) {
+//         cb(null, `${Date.now()}${path.extname(file.originalname)}`); // Filename with timestamp
+//     }
+// });
+
+// const upload = multer({
+//     storage: { fileSize: 50 * 1024 * 1024 }, // 50MB, adjust as needed
+// });
+const storage=multer.diskStorage({
+    destination:(req,file,cb)=>{
+        cb(null,"public/images")
+    },
+    filename:(req,file,cb)=>{
+        cb(null,file.fieldname+"_"+Date.now()+path.extname(file.originalname))
+    }
+})
+const upload=multer({
+    storage:storage
+})
 
 exports.createCategory = async (req, res) => {
     try {
-        const { number, categoryname } = req.body;
-        console.log(number)
+        const { number, categoryname} = req.body;
+        // console.log(req.file)
         if (!number || !categoryname) {
           return res.status(400).send('Number and Category Name are required');
         }
-    
         const newCategory = new CategorySchema({
-          categoryname,
-          number
+          categoryname:categoryname,
+          number:number,
+          imageUrl:req.file.filename
         });
+        console.log(newCategory)
         
         await newCategory.save();
         res.status(200).send('Category created successfully');
@@ -24,7 +52,7 @@ exports.createCategory = async (req, res) => {
 exports.getCategories = async (req, res) => {
     try {
         const categories = await CategorySchema.find({});
-        console.log(categories)
+        // console.log(categories)
         res.status(200).json(categories);
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -65,6 +93,7 @@ exports.updateCategory = async (req, res) => {
         if (!updatedCategory) {
             return res.status(404).json({ message: 'Category not found' });
         }
+        
         res.status(200).json({ message: 'Category updated successfully', category: updatedCategory });
     } catch (error) {
         console.error('Error updating category:', error);

@@ -3,17 +3,18 @@ const productSchema = require('../model/product.model');
 exports.createProduct = async (req, res) => {
     try {
         const { categoryname, subcategory,productname } = req.body;
-        // console.log(number)
+        // console.log(categoryname)
         if (!categoryname || !subcategory||!productname) {
           return res.status(400).send('categoryname ,subCategory and product name  are required');
         }
     
         const newCategory = new productSchema({
-          categoryname,
-          subcategory,
-          productname
+          categoryname:categoryname,
+          subcategory:subcategory,
+          productname:productname,
+        //   imageUrl:req.file.filename
         });
-        
+        console.log(newCategory)
         await newCategory.save();
         res.status(200).send('Category created successfully');
       } catch (error) {

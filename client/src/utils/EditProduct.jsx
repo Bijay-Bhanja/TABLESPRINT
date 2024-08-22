@@ -97,7 +97,7 @@ function EditProduct() {
 
             <div className="flex space-x-4">
               <div className="border rounded-lg p-4 bg-card">
-                <img alt="Uploaded image preview" src="https://placehold.co/100x100" className="rounded-md mb-2" />
+                <img alt="preview" src="https://placehold.co/100x100" className="rounded-md mb-2" />
                 <span className="text-muted-foreground">Upload Image</span>
               </div>
               <div className="border rounded-lg p-4 bg-card flex flex-col border-dashed">

@@ -1,15 +1,18 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import logo0 from '../assets/category.svg';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {ToastContainer,toast} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
-function Data() {
+
+
+function Categoryhome() {
     const [userCategory, setUserCategory] = useState([]); 
     const [isDelete, setIsDelete]=useState(false) 
+    
     const toastOptions={
         position:"bottom-right",
         autoClose:8000,
@@ -17,7 +20,8 @@ function Data() {
         draggable:true,
         theme:"dark"
     }
-    let navigate = useNavigate()
+    
+    // let navigate = useNavigate()
     useEffect(() => {
         axios.get('http://localhost:5000/categorys/addcategorys')
             .then((res) => {
@@ -76,8 +80,8 @@ function Data() {
                             <tr key={category._id} className="hover:bg-muted/50 bg-gray-100">
                                 <td className="py-2 px-4 border-b">{index + 110}</td>
                                 <td className="py-2 px-4 border-b">{category.categoryname}</td>
-                                <td className="py-2 px-4 border-b">
-                                    <img alt={category.categoryname} src={category.imageUrl} className="w-10 h-10" />
+                                <td className="py-2 px-4 border-b flex justify-center">
+                                    <img alt={category.categoryname} src={`http://localhost:5000/images/${category.imageUrl}`} className="w-10 h-10" />
                                 </td>
                                 <td className="py-2 px-4 border-b">
                                     {/* {console.log(category.status)} */}
@@ -93,6 +97,8 @@ function Data() {
                                     }>
                                         <DeleteIcon className="text-red-800" />
                                     </button>
+
+                                    
                                 </td>
                             </tr>
                         ))}
@@ -104,4 +110,4 @@ function Data() {
     );
 }
 
-export default Data;
+export default Categoryhome;
