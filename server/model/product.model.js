@@ -14,10 +14,14 @@ const productSchema = new Schema({
         type:String,
         required:true
     },
-    // imageUrl:{
-    //     type:String,
-    //     required:false
-    // }
+    imageUrl:{
+        type:String,
+        required:false
+    },
+    status:{
+        type:Boolean,
+        default:true
+    }
   
     
     

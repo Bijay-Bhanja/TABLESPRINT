@@ -13,13 +13,12 @@ const CategorySchema = new Schema({
     imageUrl:{
         type:String,
         required:false
-    }
-    // },
-    // status:{
-    //     type:Boolean,
-    //     default:false
+    },
+    status:{
+        type:Boolean,
+        default:true
 
-    // }
+    }
     
     
 });

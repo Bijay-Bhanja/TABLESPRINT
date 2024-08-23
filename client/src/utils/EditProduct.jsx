@@ -48,7 +48,8 @@ function EditProduct() {
     axios.put(`http://localhost:5000/products/updateproduct/${obj.id}`, {
         categoryname:name,
         subcategory:subCategory,
-        productname:product
+        productname:product,
+        status:status
     })
       .then((response) => {
       

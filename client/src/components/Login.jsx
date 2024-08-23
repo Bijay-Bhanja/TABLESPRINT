@@ -53,7 +53,7 @@ function Login() {
             <input className="w-full p-2 border border-border rounded" type="password" id="password" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
           <div className="flex justify-between mb-4">
-            <a href="#" className="text-accent hover:underline ml-auto">Forgot Password?</a>
+            <Link to="/forgetpassword" className="text-accent hover:underline ml-auto">Forgot Password?</Link>
           </div>
           <button className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/80 p-2 rounded-lg bg-violet-800 text-white" onClick={handleLogin}>Log In</button>
           <Link to={"/register"} className="block text-center bg-secondary border border-border text-secondary-foreground hover:bg-secondary/80 p-2 rounded-lg mt-4 bg-transparent text-violet-800 hover:text-violet-900">Create Account</Link>

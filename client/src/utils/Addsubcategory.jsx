@@ -13,14 +13,15 @@ function Addsubcategory() {
     const [subname, setSubname] = useState('');
     const [sequence, setSequence] = useState('');
     const [imagePreview, setImagePreview] = useState(null);
-
+    const [image,setImage]=useState()
     const navigate=useNavigate()
     const handleImageUpload = (e) => {
+        setImagePreview(e.target.files[0])
         const file = e.target.files[0];
         if (file) {
           const reader = new FileReader();
           reader.onloadend = () => {
-            setImagePreview(reader.result); // Set the preview to the uploaded image
+            setImage(reader.result); // Set the preview to the uploaded image
           };
           reader.readAsDataURL(file);
         }
@@ -35,13 +36,17 @@ function Addsubcategory() {
     }
     const dataSave = async (e) => {
         e.preventDefault();
-        
+        const categoryData=new FormData()
+        categoryData.append("category", category);
+        categoryData.append("subCategoryName",subname)
+        categoryData.append("subCategorySequence", sequence);
+        categoryData.append("file",imagePreview)
 
-        const categoryData = {
-            category,
-            subCategoryName: subname,
-            subCategorySequence: sequence,
-        };
+        // const categoryData = {
+        //     category,
+        //     subCategoryName: subname,
+        //     subCategorySequence: sequence,
+        // };
         // console.log(categoryData);
 
         if (!category || !subname || !sequence) {
@@ -54,6 +59,7 @@ function Addsubcategory() {
                 setCategory('');
                 setSubname('');
                 setSequence('');
+                setImage(null)
             } catch (error) {
                 console.error('Failed to send data:', error);
                 alert(`Error: ${error.message}`);
@@ -115,8 +121,8 @@ function Addsubcategory() {
                             className="hidden" // Hide the file input
                             id="imageUpload"
                             />
-                            {imagePreview ? (
-                            <img alt="preview" src={imagePreview} className="rounded-md mb-2 w-20 h-20" />
+                            {image ? (
+                            <img alt="preview" src={image} className="rounded-md mb-2 w-20 h-20" />
                             ) : (
                             <span className="text-muted-foreground">Upload Image</span>
                             )}

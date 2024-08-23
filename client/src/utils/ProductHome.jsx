@@ -76,8 +76,9 @@ function ProductHome() {
               <th className="py-2 px-4 border-b">Product Name</th>
               <th className="py-2 px-4 border-b">SubCategory</th>
               <th className="py-2 px-4 border-b">Category</th>
+              <th className="py-2 px-4 border-b">Image</th>
               <th className="py-2 px-4 border-b">Status</th>
-              {/* <th className="py-2 px-4 border-b">Sequence</th> */}
+              
               <th className="py-2 px-4 border-b">Action</th>
             </tr>
           </thead>
@@ -88,9 +89,14 @@ function ProductHome() {
                 <td className="py-2 px-4 border-b text-center">{subcategory.categoryname}</td>
                 <td className="py-2 px-4 border-b text-center">{subcategory.productname}</td>
                 <td className="py-2 px-4 border-b text-center">{subcategory.subcategory}</td>
+                <td className="py-2 px-4 border-b text-center flex justify-center">
+                  <img alt={subcategory.categoryname} src={`http://localhost:5000/images1/${subcategory.imageUrl}`} className="w-10 h-10" />
+
+                </td>
+
 
                 
-                <td className="py-2 px-4 border-b text-center">
+                <td className={`py-2 px-4 border-b text-center ${subcategory.status?'text-green-500':'text-red-500'}`}>
                                     {/* {console.log(subcategory.status)} */}
                                     {subcategory.status === false ?  'Inactive':'Active'  }
                                 </td>

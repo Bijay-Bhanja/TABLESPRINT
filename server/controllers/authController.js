@@ -57,3 +57,17 @@ exports.login = async (req, res) => {
     res.status(500).send('Something went wrong');
   }
 };
+exports.forgetpassword=async(req,res)=>{
+  const {email,password}=req.body;
+  const user=await UserSchema.findOne({email})
+  // console.log(user)
+  if(user){
+    const hashedPassword=await bcrypt.hash(password,10);
+    user.password = hashedPassword;
+    await user.save()
+    res.status(200).send("password update successfully")
+  }
+  else{
+    res.status(400).send("User name is not exist")
+  }
+}

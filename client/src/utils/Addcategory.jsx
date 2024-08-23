@@ -12,6 +12,7 @@ function Addcategory() {
   const [sequence, setSequence] = useState('');
   const navigate=useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
+  const [image,setImage]=useState()
   const toastOptions={
     position:"bottom-right",
     autoClose:8000,
@@ -21,13 +22,14 @@ function Addcategory() {
 }
   const handleImageUpload = (e) => {
     setImagePreview(e.target.files[0]);
-    // if (file) {
-    //   const reader = new FileReader();
-    //   reader.onloadend = () => {
-    //     setImagePreview(reader.result); // Set the preview to the uploaded image
-    //   };
-    //   reader.readAsDataURL(file);
-    // }
+    const file=e.target.files[0]
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result); // Set the preview to the uploaded image
+      };
+      reader.readAsDataURL(file);
+    }
   };
  
   const dataSave = (e) => {
@@ -46,9 +48,9 @@ function Addcategory() {
         
         axios.post('http://localhost:5000/categorys/addcategorys', categoryData)
         .then((res)=>{
-            console.log(res)
-            navigate("/categorys")
-
+            setCategoryName("")
+            setSequence("")
+            setImage(null)
         })
         .catch((err)=>{
             console.log(err)
@@ -116,8 +118,8 @@ function Addcategory() {
                   className="hidden" // Hide the file input
                   id="imageUpload"
                 />
-                {imagePreview ? (
-                  <img alt="preview" src={imagePreview} className="rounded-md mb-2 w-20 h-20" />
+                {image ? (
+                  <img alt="preview" src={image} className="rounded-md mb-2 w-20 h-20" />
                 ) : (
                   <span className="text-muted-foreground">Upload Image</span>
                 )}

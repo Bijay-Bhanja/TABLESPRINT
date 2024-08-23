@@ -1,20 +1,29 @@
+const path = require('path');
 const productSchema = require('../model/product.model');
+// const multer=require("multer");
+
+
+
 
 exports.createProduct = async (req, res) => {
     try {
-        const { categoryname, subcategory,productname } = req.body;
-        // console.log(categoryname)
+        const { categoryname,subcategory,productname,status } = req.body;
+       
+        
+       
         if (!categoryname || !subcategory||!productname) {
+            
           return res.status(400).send('categoryname ,subCategory and product name  are required');
         }
-    
+        
         const newCategory = new productSchema({
           categoryname:categoryname,
           subcategory:subcategory,
           productname:productname,
-        //   imageUrl:req.file.filename
+          imageUrl:req.file.filename,
+          status:status
         });
-        console.log(newCategory)
+        
         await newCategory.save();
         res.status(200).send('Category created successfully');
       } catch (error) {
@@ -55,14 +64,14 @@ exports.getProductById = async (req, res) => {
 exports.updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const { categoryname, subcategory,productname } = req.body;
+        const { categoryname, subcategory,productname,status } = req.body;
 
-        if (!categoryname || !subcategory||!productname) {
+        if (!categoryname || !subcategory||!productname||status===undefined) {
             return res.status(400).send('categoryname ,subCategory and product name  are required');
           }
         const updatedProduct = await productSchema.findByIdAndUpdate(
             id,
-            { categoryname, subcategory, productname },
+            { categoryname, subcategory, productname,status },
             { new: true } // Return the updated category document
         );
         if (!updatedProduct) {

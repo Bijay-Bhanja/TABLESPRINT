@@ -3,18 +3,7 @@ const multer = require('multer');
 const path = require('path');
 
 
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, 'uploads/'); // Destination folder for uploads
-//     },
-//     filename: function (req, file, cb) {
-//         cb(null, `${Date.now()}${path.extname(file.originalname)}`); // Filename with timestamp
-//     }
-// });
 
-// const upload = multer({
-//     storage: { fileSize: 50 * 1024 * 1024 }, // 50MB, adjust as needed
-// });
 const storage=multer.diskStorage({
     destination:(req,file,cb)=>{
         cb(null,"public/images")
@@ -29,7 +18,7 @@ const upload=multer({
 
 exports.createCategory = async (req, res) => {
     try {
-        const { number, categoryname} = req.body;
+        const { number, categoryname,status} = req.body;
         // console.log(req.file)
         if (!number || !categoryname) {
           return res.status(400).send('Number and Category Name are required');
@@ -37,9 +26,10 @@ exports.createCategory = async (req, res) => {
         const newCategory = new CategorySchema({
           categoryname:categoryname,
           number:number,
-          imageUrl:req.file.filename
+          imageUrl:req.file.filename,
+          status:status
         });
-        console.log(newCategory)
+        // console.log(newCategory)
         
         await newCategory.save();
         res.status(200).send('Category created successfully');

@@ -13,6 +13,7 @@ import Addsubcategory from './utils/Addsubcategory';
 import AddProduct from './utils/AddProduct';
 import Subedit from './utils/EditSubCategory';
 import EditProduct from './utils/EditProduct';
+import ForgetPassword from './components/ForgetPassword';
 
 
 
@@ -35,7 +36,7 @@ function App() {
           <Route path='/product' element={<Product />}/>
           <Route path="/product/addproduct" element={<AddProduct />}/>
           <Route path="/product/editproduct/:id" element={<EditProduct/>}/>
-          
+          <Route path="/forgetpassword" element={<ForgetPassword/>}/>
 
         </Routes>
       

@@ -30,6 +30,7 @@ function Editcategory() {
         setName(response.data.categoryname)
         setQty(response.data.number)
         setStatus(response.data.status ? 'false' : 'true')
+        console.log(response.data.status)
       })
       .catch((error) => {
         console.log(error);

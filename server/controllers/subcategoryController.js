@@ -3,15 +3,16 @@ const SubCategory = require('../model/subcategory.model');
 exports.createSubCategory = async (req, res) => {
     try {
         const { category, subCategoryName,subCategorySequence } = req.body;
-        console.log(category)
+      
         if (!category || !subCategoryName||!subCategorySequence) {
           return res.status(400).send('Number and Category Name are required');
         }
-    
+      
         const newCategory = new SubCategory({
             category,
             subCategoryName,
-            subCategorySequence
+            subCategorySequence,
+            imageUrl:req.file.filename
         });
         
         await newCategory.save();
@@ -54,7 +55,7 @@ exports.getSubCategoryById = async (req, res) => {
 exports.updateSubCategory = async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(id)
+        // console.log(id)
         const { category, subCategorySequence, status } = req.body;
         if (!category || !subCategorySequence || status === undefined) {
             return res.status(400).json({ message: 'Number, Category Name, and Status are required' });
