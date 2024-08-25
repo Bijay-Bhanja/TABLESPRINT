@@ -6,8 +6,7 @@ const authRoutes = require('./routes/authRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const subcategoryRoutes = require('./routes/subcategoryRoutes');
 const productRoutes=require('./routes/productRoutes')
-// const { authenticateToken } = require('./middleware/authMiddleware');
-const { errorHandler } = require('./middleware/errorMiddleware');
+const { authenticateToken } = require('./middleware/authMiddleware');
 
 
 const app = express();
@@ -18,15 +17,14 @@ app.use(express.json());
 app.use(express.static("public"))
 
 connectDB();
+// console.log(authenticateToken)
 
 // Routes
 app.use('/auth', authRoutes);
-app.use('/categorys', categoryRoutes);
-app.use('/subcategorys', subcategoryRoutes);
-app.use('/products',productRoutes)
+app.use('/categorys',authenticateToken, categoryRoutes);
+app.use('/subcategorys',authenticateToken, subcategoryRoutes);
+app.use('/products',authenticateToken,productRoutes)
 
-// Error handling middleware
-app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

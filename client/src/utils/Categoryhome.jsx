@@ -47,9 +47,16 @@ function Categoryhome() {
         draggable: true,
         theme: "dark"
     };
-
+    
+    const token=localStorage.getItem("token")
     useEffect(() => {
-        axios.get('http://localhost:5000/categorys/addcategorys')
+        
+        // console.log(token)
+        axios.get('http://localhost:5000/categorys/addcategorys',{
+            headers:{
+                'Authorization':`Bearer ${token}`
+            }
+        })
             .then((res) => {
                 setUserCategory(res.data);
                 setIsDelete(false);
@@ -57,10 +64,14 @@ function Categoryhome() {
             .catch((err) => {
                 console.log(err);
             });
-    }, [isDelete]);
+    }, [isDelete,token]);
 
     const deleteCategory = (id) => {
-        axios.delete(`http://localhost:5000/categorys/deletecategorys/${id}`)
+        axios.delete(`http://localhost:5000/categorys/deletecategorys/${id}`,{
+            headers:{
+                'Authorization':`Bearer ${token}`
+            }
+        })
             .then(() => {
                 setIsDelete(true);
                 toast.success("Category deleted", toastOptions);
@@ -73,7 +84,7 @@ function Categoryhome() {
 
     return (
         <div>
-            <div className="p-4 text-center w-auto">
+            <div className="p-4 text-center w-auto mt-20">
                 <div className="flex justify-between items-center text-center mb-4">
                     <h1 className="text-xl font-bold flex">
                         <img src={logo0} alt="" className="px-2" />

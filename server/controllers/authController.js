@@ -33,6 +33,7 @@ console.log(email)
 
 exports.login = async (req, res) => {
   // Login logic
+
   try {
     const { email, password } = req.body;
     if (!email || !password) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image1 from "../assets/i1.jpg";
 import Image2 from "../assets/i3.jpg";
 import axios from 'axios';
@@ -19,6 +19,12 @@ function Register() {
         draggable:true,
         theme:"dark"
     }
+    useEffect(()=>{
+        const user=localStorage.getItem("token")
+        if(user){
+            navigate("/dashboard")
+        }
+    },[navigate])
     const formHandle = (e) => {
         e.preventDefault(); // Prevent the default form submission
 

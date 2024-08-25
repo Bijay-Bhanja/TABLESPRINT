@@ -53,7 +53,12 @@ function Addsubcategory() {
             toast.error("please fill all the inputs",toastOptions)
         } else {
             try {
-                await axios.post('http://localhost:5000/subcategorys/subaddcategory', categoryData);
+                const token=localStorage.getItem("token")
+                await axios.post('http://localhost:5000/subcategorys/subaddcategory', categoryData,{
+                    headers:{
+                        'Authorization':`Bearer ${token}`
+                    }
+                });
                
                 toast.success("data added successfully",toastOptions)
                 setCategory('');
@@ -76,7 +81,7 @@ function Addsubcategory() {
             <Navbars />
             <div className="flex justify-between">
                 <Drawer />
-                <div className="p-6 m-6 bg-background rounded-lg shadow-md w-4/5 ">
+                <div className="p-6 m-6 bg-background rounded-lg shadow-md w-4/5 mt-24">
 
                     <h1 className="text-xl font-bold flex items-center mb-4 md:mb-0">
                         <Link to="/subcategorys">

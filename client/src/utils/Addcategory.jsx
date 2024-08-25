@@ -22,10 +22,12 @@ function Addcategory() {
 }
   const handleImageUpload = (e) => {
     setImagePreview(e.target.files[0]);
+   
     const file=e.target.files[0]
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
+      
         setImage(reader.result); // Set the preview to the uploaded image
       };
       reader.readAsDataURL(file);
@@ -39,18 +41,24 @@ function Addcategory() {
     categoryData.append("categoryname", categoryName);
     categoryData.append("number", sequence);
     categoryData.append("file",imagePreview)
-    // console.log(categoryData); 
+
 
     if (categoryName === '' || sequence === '') {
       toast.error("please fill all the inputs",toastOptions)
     } else {
       try {
-        
-        axios.post('http://localhost:5000/categorys/addcategorys', categoryData)
+        const token=localStorage.getItem("token")
+        // console.log(token)
+        axios.post('http://localhost:5000/categorys/addcategorys', categoryData,{
+          headers:{
+            'Authorization':`Bearer ${token}`
+        }
+        })
         .then((res)=>{
             setCategoryName("")
             setSequence("")
             setImage(null)
+            toast.success("Data added successfully",toastOptions)
         })
         .catch((err)=>{
             console.log(err)
@@ -73,7 +81,7 @@ function Addcategory() {
       <Navbars />
       <div className="flex justify-between">
         <Drawer />
-        <div className="p-6 m-6 bg-background rounded-lg shadow-md w-4/5">
+        <div className="p-6 m-6 bg-background rounded-lg shadow-md w-4/5 mt-24">
           <h2 className="text-lg font-semibold mb-4">
             <button className="mr-4">
               <Link to="/categorys">
@@ -85,6 +93,8 @@ function Addcategory() {
           <form onSubmit={dataSave}>
             <div className="flex gap-10">
               <div className="mb-4">
+              <label className="block text-muted-foreground mb-1">Category Name</label>
+
                 <input
                   type="text"
                   className="mt-1 block w-full border border-border rounded-md p-2 focus:ring focus:ring-ring placeholder:text-black focus:outline-none"
@@ -93,7 +103,9 @@ function Addcategory() {
                   onChange={(e) => setCategoryName(e.target.value)}
                 />
               </div>
+              
               <div className="mb-4">
+              <label className="block text-muted-foreground mb-1">Category Sequence</label>
                 <input
                   type="number"
                   min="1"

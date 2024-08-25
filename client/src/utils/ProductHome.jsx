@@ -7,10 +7,29 @@ import Product from "../assets/product.svg"
 import axios from 'axios';
 import {ToastContainer,toast} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import IconButton from '@mui/material/IconButton';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 function ProductHome() {
   const [usersub, setUsersub] = useState([]);  
   const [isDelete,setIsDelete]=useState(false)
+  const [open, setOpen] = useState(false);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   // console.log(usersub)
   const toastOptions={
     position:"bottom-right",
@@ -19,9 +38,23 @@ function ProductHome() {
     draggable:true,
     theme:"dark"
 }
+const handleOpen = (id) => {
+  setSelectedCategoryId(id);
+  setOpen(true);
+};
+
+const handleClose = () => {
+  setSelectedCategoryId(null);
+  setOpen(false);
+};
+const token=localStorage.getItem("token")
     // let navigate = useNavigate()
     useEffect(() => {
-        axios.get('http://localhost:5000/products/getproduct')
+        axios.get('http://localhost:5000/products/getproduct',{
+          headers:{
+            'Authorization':`Bearer ${token}`
+        }
+        })
             .then((res) => {
               // console.log(setUsersub(res.data));
                 setIsDelete(false)
@@ -30,18 +63,23 @@ function ProductHome() {
             .catch((err) => {
                 console.log(err);
             });
-    }, [isDelete]);
+    }, [isDelete,token]);
    
     
 
     const deleteProduct = (id) => {
       // console.log(`Attempting to delete subcategory with ID: ${id}`);
   
-      axios.delete(`http://localhost:5000/products/deleteproduct/${id}`)
+      axios.delete(`http://localhost:5000/products/deleteproduct/${id}`,{
+        headers:{
+          'Authorization':`Bearer ${token}`
+      }
+      })
           .then(() => {
               // console.log('Category deleted successfully');
               setIsDelete(true)
               // navigate('/product');
+              handleClose()
               toast.success("product deleted successfully",toastOptions)
           })
           .catch((err) => {
@@ -51,7 +89,7 @@ function ProductHome() {
   
     
   return (
-    <div className="p-4">
+    <div className="p-4 mt-20">
       <div className="flex flex-col md:flex-row justify-between items-center mb-4">
       
         <h1 className="text-xl font-bold flex items-center mb-4 md:mb-0">
@@ -89,7 +127,7 @@ function ProductHome() {
                 <td className="py-2 px-4 border-b text-center">{subcategory.categoryname}</td>
                 <td className="py-2 px-4 border-b text-center">{subcategory.productname}</td>
                 <td className="py-2 px-4 border-b text-center">{subcategory.subcategory}</td>
-                <td className="py-2 px-4 border-b text-center flex justify-center">
+                <td className="py-2 px-4 border-b text-center flex justify-center items-center">
                   <img alt={subcategory.categoryname} src={`http://localhost:5000/images1/${subcategory.imageUrl}`} className="w-10 h-10" />
 
                 </td>
@@ -101,17 +139,40 @@ function ProductHome() {
                                     {subcategory.status === false ?  'Inactive':'Active'  }
                                 </td>
                 
-                <td className="py-2 px-7 border-b text-center">
+                <td className="py-2 px-7 border-b text-center flex justify-center items-center">
                   <button className="text-destructive px-2">
                     <Link to={`/product/editproduct/${subcategory._id}`}>
                       <EditIcon className="text-blue-700" />
                     </Link>
                   </button>
-                  <button className="text-destructive px-2" onClick={() =>
-                                        deleteProduct(subcategory._id)
-                                    } >
-                    <DeleteIcon className="text-red-800" />
-                  </button>
+                  <div>
+                    <IconButton aria-label="delete" onClick={() => handleOpen(subcategory._id)}>
+                      <DeleteIcon sx={{ color: "red" }} />
+                    </IconButton>
+                    <Modal
+                      open={open}
+                      onClose={handleClose}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
+                    >
+                      <Box sx={style}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ textAlign: "center" }}>
+                          Are you sure you want to delete?
+                        </Typography>
+                        <Typography id="modal-modal-description" sx={{ display: "flex", justifyContent: "space-around" }}>
+                          <Button onClick={handleClose} variant="contained" sx={{ color: "black", background: "white" }}>
+                            Cancel
+                          </Button>
+                          <Button
+                            variant="contained"
+                            onClick={() => deleteProduct(selectedCategoryId)}
+                          >
+                            Confirm
+                          </Button>
+                        </Typography>
+                      </Box>
+                    </Modal>
+                  </div>
                 </td>
               </tr>
             ))}

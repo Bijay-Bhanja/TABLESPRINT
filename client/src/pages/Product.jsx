@@ -21,7 +21,6 @@ function Product() {
         <Drawer />
       </div>
       <main className="flex-auto p-4 overflow-y-auto">
-        {/* <Subcategoryhome /> */}
         <ProductHome/>
       </main>
     </div>

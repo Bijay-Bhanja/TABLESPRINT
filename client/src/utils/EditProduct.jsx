@@ -13,6 +13,7 @@ function EditProduct() {
   let [subCategory, setSubCategory] = useState("")
   let [status, setStatus] = useState("")
   let [product,setProduct]=useState("")
+  let [image,setImage]=useState()
 
   let navigate = useNavigate()
   const toastOptions={
@@ -24,20 +25,25 @@ function EditProduct() {
 }
   let obj = useParams()
 //   console.log(obj);
-
+const token=localStorage.getItem("token")
   useEffect(() => {
-    axios.get(`http://localhost:5000/products/getproductbyid/${obj.id}`)
+    axios.get(`http://localhost:5000/products/getproductbyid/${obj.id}`,{
+      headers:{
+        'Authorization':`Bearer ${token}`
+    }
+    })
       .then((response) => {
         // console.log(response)
         setName(response.data.categoryname)
         setProduct(response.data.productname)
         setSubCategory(response.data.subcategory)
         setStatus(response.data.status ? 'false' : 'true')
+        setImage(response.data.imageUrl)
       })
       .catch((error) => {
         console.log(error);
       })
-  }, [obj.id])
+  }, [obj.id,token])
 
   const cancelProduct=()=>{
     navigate("/product")
@@ -50,6 +56,10 @@ function EditProduct() {
         subcategory:subCategory,
         productname:product,
         status:status
+    },{
+      headers:{
+        'Authorization':`Bearer ${token}`
+    }
     })
       .then((response) => {
       
@@ -67,7 +77,7 @@ function EditProduct() {
       <Navbars />
       <div className='flex justify-between'>
         <Drawer />
-        <div className="p-6 bg-background rounded-lg shadow-md w-4/5">
+        <div className="p-6 bg-background rounded-lg shadow-md w-4/5 mt-24">
           <h2 className="text-lg font-semibold mb-4">
             <button className='mr-4'>  <Link to="/product"><FaArrowLeft /></Link></button>Edit Product</h2>
           <form >
@@ -97,15 +107,20 @@ function EditProduct() {
             </div>
 
             <div className="flex space-x-4">
-              <div className="border rounded-lg p-4 bg-card">
-                <img alt="preview" src="https://placehold.co/100x100" className="rounded-md mb-2" />
-                <span className="text-muted-foreground">Upload Image</span>
-              </div>
-              <div className="border rounded-lg p-4 bg-card flex flex-col border-dashed">
-                {/* <img undefinedhidden="true" alt="Upload icon" src="https://openui.fly.dev/openui/50x50.svg?text=📸" className="mb-2 " /> */}
+            <div className="border rounded-lg p-4 bg-card">
+             
+             {image ? (
+               <img alt="preview" src={`http://localhost:5000/images1/${image}`} className="rounded-md mb-2 w-20 h-20" />
+             ) : (
+               <span className="text-muted-foreground">Image is not uploaded</span>
+             )}
+             
+           </div>
+              {/* <div className="border rounded-lg p-4 bg-card flex flex-col border-dashed">
+                <img undefinedhidden="true" alt="Upload icon" src="https://openui.fly.dev/openui/50x50.svg?text=📸" className="mb-2 " />
                 <input type="file" />
                 <span className="text-muted-foreground">Upload Maximum allowed<br />file size is 10MB</span>
-              </div>
+              </div> */}
             </div>
             <div className="flex justify-end  mt-12 gap-8">
               <button type="button" onClick={cancelProduct} className="bg-muted text-muted-foreground hover:bg-muted/80 p-2 w-28 border border-border rounded-full ">

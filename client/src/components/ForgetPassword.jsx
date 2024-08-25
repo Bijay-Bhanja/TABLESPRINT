@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Logo from "../assets/i3.jpg";
 import back from "../assets/back.png";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {ToastContainer,toast} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css"
 function ForgetPassword() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  let navigate=useNavigate()
+  // let navigate=useNavigate()
   const toastOptions={
     position:"bottom-right",
     autoClose:8000,
@@ -57,6 +57,7 @@ function ForgetPassword() {
             {/* <a href="#" className="text-accent hover:underline ml-auto">Forgot Password?</a> */}
           </div>
           <button className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/80 p-2 rounded-lg bg-violet-800 text-white" onClick={handleSave}>Save</button>
+          <h1 className='text-center font-bold'>Please <Link className='text-blue-900 font-bold underline decoration-solid' to="/">Login</Link>.</h1>
           {/* <Link to={"/register"} className="block text-center bg-secondary border border-border text-secondary-foreground hover:bg-secondary/80 p-2 rounded-lg mt-4 bg-transparent text-violet-800 hover:text-violet-900">Create Account</Link> */}
         </form>
       </div>

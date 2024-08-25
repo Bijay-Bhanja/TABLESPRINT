@@ -38,7 +38,7 @@ exports.getSubCategoryById = async (req, res) => {
     try {
         const { id } = req.params;
         const category = await SubCategory.findById(id);
-        console.log(category)
+        // console.log(category)
         if (!category) {
             return res.status(404).json({ message: 'Category not found' });
         }
@@ -56,13 +56,13 @@ exports.updateSubCategory = async (req, res) => {
     try {
         const { id } = req.params;
         // console.log(id)
-        const { category, subCategorySequence, status } = req.body;
-        if (!category || !subCategorySequence || status === undefined) {
+        const { category,subCategoryName, subCategorySequence, status } = req.body;
+        if (!category ||!subCategoryName|| !subCategorySequence || status === undefined) {
             return res.status(400).json({ message: 'Number, Category Name, and Status are required' });
         }
         const updatedCategory = await SubCategory.findByIdAndUpdate(
             id,
-            { category, subCategorySequence, status },
+            { category,subCategoryName, subCategorySequence, status },
             { new: true } // Return the updated category document
         );
         if (!updatedCategory) {

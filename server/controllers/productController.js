@@ -35,7 +35,7 @@ exports.createProduct = async (req, res) => {
 exports.getProduct = async (req, res) => {
     try {
         const categories = await productSchema.find({});
-        console.log(categories)
+        // console.log(categories)
         res.status(200).json(categories);
     } catch (error) {
         console.error('Error fetching categories:', error);

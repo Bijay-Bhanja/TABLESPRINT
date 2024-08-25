@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Logo from "../assets/i3.jpg";
 import back from "../assets/back.png";
 import { Link, useNavigate } from 'react-router-dom';
@@ -17,6 +17,12 @@ function Login() {
     draggable:true,
     theme:"dark"
 }
+useEffect(()=>{
+  const user=localStorage.getItem("token")
+  if(user){
+    navigate('/dashboard')
+  }
+},[navigate])
   const handleLogin = async (e) => {
     e.preventDefault();
 
